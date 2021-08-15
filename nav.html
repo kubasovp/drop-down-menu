@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      position: relative;
+      height: 100vh;
+      padding: 8px;
+    }
+
+    .btn {
+      cursor: pointer;
+    }
+
+    .menu {
+      height: 0;
+      overflow: hidden;
+    }
+
+    .menu.active {
+      height: 150px;
+      transition: height 0.5s ease-in-out;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-color: rgba(0 0 0 / 0.0);
+    }
+
+    .overlay.active {
+      background-color: rgba(0 0 0 / 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <button class="main-menu-btn btn">Main menu</button>
+    <button class="user-menu-btn btn">User menu</button>
+    <nav class="menu main-menu">
+      <ul>
+        <li>Menu item 1</li>
+        <li>Menu item 2</li>
+        <li>Menu item 3</li>
+        <li>Menu item 4</li>
+        <li>Menu item 5</li>
+      </ul>
+    </nav>
+    <nav class="menu user-menu">
+      <ul>
+        <li>User item 1</li>
+        <li>User item 2</li>
+        <li>User item 3</li>
+        <li>User item 4</li>
+        <li>User item 5</li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio magnam culpa provident ea sapiente quia minus,
+      deserunt soluta neque? Cupiditate optio maxime soluta eos obcaecati fuga sequi porro esse quas.</p>
+  </main>
+
+  <div class="overlay"></div>
+
+  <script>
+    class Menu {
+      constructor(classname) {
+        this.classname = classname;
+        this.menuElement = document.querySelector(`.${classname}`);
+        this.menuBtn = document.querySelector(`.${classname}-btn`);
+      }
+
+      static isAnyMenuOpen = false;
+      static opened = null;
+      static menuArr = document.getElementsByClassName("menu");
+
+      open() {
+        if (Menu.isAnyMenuOpen) {
+          this.closeAll();
+        }
+        if (Menu.opened === this) {
+          this.closeAll();
+          Menu.opened = null;
+          return;
+        }
+        Menu.opened = this;
+        Menu.isAnyMenuOpen = true;
+        this.menuElement.classList.add("active");
+      }
+
+      closeAll() {
+        for (let i = 0; i < Menu.menuArr.length; i++) {
+          Menu.menuArr[i].classList.remove("active");
+        };
+        Menu.isAnyMenuOpen = false;
+      }
+
+      start() {
+        this.menuBtn.addEventListener('click', this.open.bind(this));
+      }
+    }
+
+    const mainMenu = new Menu("main-menu");
+    const userMenu = new Menu("user-menu");
+
+    mainMenu.start();
+    userMenu.start();
+  </script>
+</body>
+
+</html>
