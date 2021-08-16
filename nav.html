@@ -96,13 +96,13 @@
       static menuArr = document.getElementsByClassName("menu");
 
       open() {
-        if (Menu.isAnyMenuOpen) {
-          this.closeAll();
-        }
         if (Menu.opened === this) {
           this.closeAll();
           Menu.opened = null;
           return;
+        }
+        if (Menu.isAnyMenuOpen) {
+          this.closeAll();
         }
         Menu.opened = this;
         Menu.isAnyMenuOpen = true;
